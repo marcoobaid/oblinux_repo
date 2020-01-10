@@ -3,13 +3,13 @@
 echo "Clean out old db"
 echo
 
-rm hefftor-repo*
+rm oblinux_repo*
 
 echo
 echo "Run repo-add"
 echo 
 
-repo-add hefftor-repo.db.tar.gz *.pkg.tar.xz
+repo-add oblinux-repo.db.tar.gz *.pkg.tar.xz
 
 echo "####################################"
 echo "Repo Updated!!"
