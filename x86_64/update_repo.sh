@@ -9,7 +9,7 @@ echo
 echo "Run repo-add"
 echo 
 
-repo-add oblinux_repo.db.tar.gz *.pkg.tar.xz
+repo-add oblinux_repo.db.tar.gz *.pkg.tar.zst
 
 echo "####################################"
 echo "Repo Updated!!"
