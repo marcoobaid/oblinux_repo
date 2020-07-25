@@ -13,6 +13,8 @@ Packages
 
 
 * calamares 
+* oh-my-bash
+
 ------
 
 
