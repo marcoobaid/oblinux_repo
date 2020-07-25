@@ -1,4 +1,4 @@
-# oblinux Repo
+# OBLinux Repo
 
 ### Changes to packages
 
