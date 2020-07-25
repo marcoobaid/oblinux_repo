@@ -1,6 +1,6 @@
 # OBLinux Repo
 
-### Changes to packages
+### Changes to Packages
 
 local and dconf have been moved into there indavidual packages for xfce.
 
@@ -21,7 +21,7 @@ Packages
 Instructions
 ------
 
-edit your `/etc/pacman.conf` and at the bottom of your file add block below.
+Edit your `/etc/pacman.conf` and add the block below at the bottom of your file:
 
 ```
 	[oblinux_repo]
