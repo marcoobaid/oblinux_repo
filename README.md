@@ -12,7 +12,7 @@ Packages
 ------
 
 
-* betterlockscreen-git
+* calamares 
 ------
 
 
