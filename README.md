@@ -2,9 +2,9 @@
 
 ### Changes to Packages
 
-local and dconf have been moved into there indavidual packages for xfce.
+local and dconf have been moved into their indavidual packages for xfce.
 
-gimp, conky and root has been moved into there own packages.
+gimp, conky and root have been moved into their own packages.
 
 
 
@@ -13,7 +13,11 @@ Packages
 
 
 * calamares 
+* ckbcomp
+* mkinitcpio-openswap
+* oblinux-calamares-config
 * oh-my-bash
+* yay-bin
 
 ------
 
