@@ -43,12 +43,34 @@ Then, from `x86_64/`:
 ```
 This regenerates the repo database from *all* packages currently in
 `x86_64/` — old versions of a package should be removed from that directory
-first if you don't want them still served.
+first if you don't want them still served. `repo-add` also (re)creates
+`oblinux_repo.db`/`oblinux_repo.files` as symlinks pointing at the
+`.tar.gz` archives — these are build output, not something to hand-edit or
+commit independently of running `update_repo.sh`.
 
 Commit and push `x86_64/` (packages + the regenerated `.db`/`.files`
 archives) to publish via GitHub Pages.
 
 ## Packages currently published
 
-- `calamares` — installer framework, from AUR (not in official repos)
-- `paru` — AUR helper, from AUR (not in official repos)
+**None yet** — this repo was cleaned out of old/stale builds and is
+waiting on `calamares` and `paru` to be built and published (see above).
+Until then, anything depending on `[oblinux_repo]` (e.g. the `oblinux` ISO
+build) will fail to resolve those packages.
+
+## Gotchas
+
+- **`.nojekyll`**: this repo is a package store, not a Jekyll site, so
+  GitHub Pages is told not to run it through Jekyll's build. Without this
+  file, Jekyll's build previously failed outright on the `oblinux_repo.db`
+  symlink (`Error: No such file or directory ... rb_check_realpath_internal`)
+  when its target didn't exist yet (e.g. right after a cleanup, before any
+  package had been published) — Jekyll tries to resolve every file's real
+  path, including symlinks, and errors on a dangling one. Do not remove
+  `.nojekyll`.
+- If `x86_64/oblinux_repo.db` or `.files` ever end up as **dangling
+  symlinks** (pointing at a `.tar.gz` that doesn't exist — e.g. after
+  deleting old packages without also removing/regenerating these), the
+  fix is to either remove them (if the repo is meant to be empty for now)
+  or run `update_repo.sh` again (if packages exist to regenerate them
+  from).
