@@ -53,10 +53,14 @@ archives) to publish via GitHub Pages.
 
 ## Packages currently published
 
-**None yet** — this repo was cleaned out of old/stale builds and is
-waiting on `calamares` and `paru` to be built and published (see above).
-Until then, anything depending on `[oblinux_repo]` (e.g. the `oblinux` ISO
-build) will fail to resolve those packages.
+- `calamares-3.4.2-2` — installer framework, from AUR (not in official repos)
+- `paru-2.1.0-2` — AUR helper, from AUR (not in official repos)
+
+Verified working end to end: built, published, served correctly via GitHub
+Pages, and confirmed resolving on a built/booted `oblinux` system (`paru`
+itself reports `oblinux_repo is up to date` alongside `core`/`extra`). See
+[`oblinux`](https://github.com/marcoobaid/oblinux)'s `docs/TESTING.md`,
+round 7.
 
 ## Gotchas
 
