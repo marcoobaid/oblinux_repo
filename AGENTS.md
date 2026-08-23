@@ -36,13 +36,14 @@ resolvable by pacman.
   AUR, no separate OBLinux repo for them) and OBLinux's own package repos
   (currently only `oblinux-icon-theme`). This repo does not track or
   vendor either kind's source, only the built `.pkg.tar.zst` output.
-- **Trust propagation**: the public half of this repo's signing key
-  (`D0514F69650F2B9725E12E26297CB74B36C93A92`) is committed in the
-  primary repo at `airootfs/usr/share/pacman/keyrings/oblinux-repo.gpg`
-  and imported there at build/live-boot/install time. **The private key
-  is never in any repo** — it lives only in the build machine's own GPG
-  keyring. See `docs/PACKAGE_SIGNING.md` in the primary repo for the full
-  key lifecycle.
+- **Trust propagation**: the public half of this repo's signing key is
+  committed in the primary repo at
+  `airootfs/usr/share/pacman/keyrings/oblinux-repo.gpg` and imported
+  there at build/live-boot/install time. See that repo's
+  `docs/PACKAGE_SIGNING.md` for the current fingerprint and the full key
+  lifecycle — not reproduced here so this file doesn't go stale if the
+  key is ever rotated. **The private key is never in any repo** — it
+  lives only in the build machine's own GPG keyring.
 
 ## Repository map
 
@@ -161,8 +162,8 @@ its real source and republish.
 
 - **A real GitHub Pages static file store, not a build server** — this
   repo never runs `makepkg`. Keeping "build" and "publish" strictly
-  separate means this repo's history stays small and its content is
-  always exactly what pacman fetches, nothing more.
+  separate keeps source/build logic entirely out of this repo, so its
+  content is always exactly what pacman fetches, nothing more.
 - **Signing lives in `update_repo.sh`, not a separate CI step** — no
   GitHub Actions/CI exists here; publishing is a manual, local action by
   whoever holds the signing key. Don't assume a push alone re-signs
