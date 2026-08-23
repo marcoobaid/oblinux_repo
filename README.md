@@ -69,19 +69,19 @@ archives) to publish via GitHub Pages.
 - `paru-2.1.0-2` — AUR helper, from AUR (not in official repos)
 - `ckbcomp-1.248-1` — keyboard-layout live-preview helper for Calamares'
   keyboard module, from AUR (not in official repos)
+- `oblinux-icon-theme-1.0.0-1` — OBLinux's default icon theme, from
+  [`oblinux-icon-theme`](https://github.com/marcoobaid/oblinux-icon-theme)
+
+All four are signed (`SigLevel = Required TrustedOnly`). Don't trust this
+list alone for what's actually published, though — check
+`tar -tzf x86_64/oblinux_repo.db.tar.gz` against it, since it's
+hand-maintained prose and can lag a real publish.
 
 Verified working end to end: built, published, served correctly via GitHub
 Pages, and confirmed resolving on a built/booted `oblinux` system (`paru`
 itself reports `oblinux_repo is up to date` alongside `core`/`extra`). See
 [`oblinux`](https://github.com/marcoobaid/oblinux)'s `docs/TESTING.md`,
 round 7.
-
-**Transitional note (2026-08-12)**: all three packages above were built
-and published *before* the signing key existed, so they don't have `.sig`
-files yet — `SigLevel` was just switched to `Required`, so `./update_repo.sh`
-needs to run once (on a machine with the signing key) to sign and
-republish them before the next `oblinux` build, or `pacstrap` will fail to
-resolve them.
 
 ## Gotchas
 
