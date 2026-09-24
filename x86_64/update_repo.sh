@@ -10,7 +10,7 @@
 # assumes it's already present in the calling user's GPG keyring.
 set -e
 
-KEYID="${OBLINUX_REPO_KEYID:-D0514F69650F2B9725E12E26297CB74B36C93A92}"
+KEYID="${OBLINUX_REPO_KEYID:-F83C29998D979B913298C40E7E0180391C821D13}"
 
 echo "Clean out old db"
 echo
