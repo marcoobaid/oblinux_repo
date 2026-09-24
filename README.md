@@ -9,8 +9,8 @@ packages.
 ## Using this repo
 
 Add to `/etc/pacman.conf` (also already wired into the
-[`oblinux`](https://github.com/marcoobaid/oblinux) ISO profile, both at
-build time and on the live/installed system):
+[`oblinux-arch-iso-dev`](https://github.com/marcoobaid/oblinux-arch-iso-dev) ISO profile,
+both at build time and on the live/installed system):
 
 ```
 [oblinux_repo]
@@ -18,18 +18,35 @@ SigLevel = Required TrustedOnly
 Server = https://marcoobaid.github.io/$repo/$arch
 ```
 
-Packages are **signed** as of 2026-08-12 (ed25519 key,
-`D0514F69650F2B9725E12E26297CB74B36C93A92`). Full details — key
-generation, backups, the signing workflow, and how trust gets baked into
-the `oblinux` ISO — in that repo's
-[`docs/PACKAGE_SIGNING.md`](https://github.com/marcoobaid/oblinux/blob/main/docs/PACKAGE_SIGNING.md).
-A system consuming this repo needs the signing key trusted locally before
-`SigLevel = Required` will work:
+Packages and repository databases are **signed**. The active Ed25519
+fingerprint after the September 2026 rotation is:
+`F83C29998D979B913298C40E7E0180391C821D13`.
+The previous private key became unavailable after the build-machine rebuild.
+All four packages and both databases have already been re-signed and pushed.
+The new portable private-key export and revocation certificate were backed
+up off-machine (owner-confirmed); neither secrets nor backup locations
+belong in Git. A portable secret-key export is a required recovery artifact.
+
+Full key history, required backups, trust propagation, and the proposed
+migration for old installations are documented in
+[`docs/PACKAGE_SIGNING.md`](https://github.com/marcoobaid/oblinux-arch-iso-dev/blob/main/docs/PACKAGE_SIGNING.md).
+A consumer must authenticate the public key's full fingerprint through a
+trusted project channel before importing and locally trusting it:
 
 ```bash
-sudo pacman-key --add oblinux-repo.gpg   # the public key, from that repo's airootfs
-sudo pacman-key --lsign-key D0514F69650F2B9725E12E26297CB74B36C93A92
+# Public key from the reviewed ISO profile's airootfs/usr/share/pacman/keyrings/
+gpg --show-keys --with-fingerprint oblinux-repo.gpg
+# Proceed only after independently confirming the full fingerprint above.
+sudo pacman-key --add oblinux-repo.gpg
+sudo pacman-key --lsign-key F83C29998D979B913298C40E7E0180391C821D13
 ```
+
+Installations from the previously published ISO still trusting only the
+old OBLinux key cannot verify the newly signed database or packages.
+The ISO overlay has no automatic OBLinux keyring update mechanism; those
+systems need a separately approved, authenticated manual trust migration.
+A package signed only by the new key cannot bootstrap that trust itself.
+Keep `SigLevel = Required TrustedOnly`; do not disable signature checking.
 
 ## Publishing a package
 
@@ -50,15 +67,20 @@ Then, from `x86_64/`:
 ```bash
 ./update_repo.sh    # signs each package, rebuilds+signs oblinux_repo.db.tar.gz
 ```
-This signs any package that doesn't already have a valid `.sig` (needs
-the OBLinux signing key present in the calling user's GPG keyring — see
-`docs/PACKAGE_SIGNING.md` in the `oblinux` repo), then regenerates the
+This signs packages with a missing `.sig` or a `.sig` older than the
+package (needs the OBLinux signing key present in the calling user's GPG keyring — see
+`docs/PACKAGE_SIGNING.md` in `oblinux-arch-iso-dev`), then regenerates the
 repo database, signed, from *all* packages currently in `x86_64/` — old
 versions of a package should be removed from that directory first if you
 don't want them still served. `repo-add` also (re)creates
 `oblinux_repo.db`/`oblinux_repo.files` as symlinks pointing at the
 `.tar.gz` archives — these are build output, not something to hand-edit or
 commit independently of running `update_repo.sh`.
+
+The script defaults to the active fingerprint above; `OBLINUX_REPO_KEYID`
+can override it. Existing signatures are not cryptographically checked by
+the skip logic: verify every package and both database signatures explicitly
+after a publish or rotation.
 
 Commit and push `x86_64/` (packages + the regenerated `.db`/`.files`
 archives) to publish via GitHub Pages.
@@ -69,7 +91,7 @@ archives) to publish via GitHub Pages.
 - `paru-2.1.0-2` — AUR helper, from AUR (not in official repos)
 - `ckbcomp-1.248-1` — keyboard-layout live-preview helper for Calamares'
   keyboard module, from AUR (not in official repos)
-- `oblinux-icon-theme-1.0.0-1` — OBLinux's default icon theme, from
+- `oblinux-icon-theme-2.0.0-1` — OBLinux's default icon theme, from
   [`oblinux-icon-theme`](https://github.com/marcoobaid/oblinux-icon-theme)
 
 All four are signed (`SigLevel = Required TrustedOnly`). Don't trust this
